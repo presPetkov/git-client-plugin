@@ -1980,32 +1980,18 @@ public class CliGitAPIImpl extends LegacyCompatibleGitAPIImpl {
         //JENKINS-48258 git client plugin occasionally fails with "text file busy" error
         //The following creates a copy of the generated file and deletes the original
         //In case of a failure return the original and delete the copy
-        try {
-            String fromLocation = ssh.toString();
-            String toLocation = ssh_copy.toString();
-
-            //Copying ssh file
-            new ProcessBuilder("cp", fromLocation, toLocation).start().waitFor();
-            isCopied = true;
-            ssh_copy.setExecutable(true,true);
-            //Deleting original file
-            deleteTempFile(ssh);
-            return ssh_copy;
-        }
-        catch(InterruptedException ie)
-		{
-			throw ie;
+        String fromLocation = ssh.toString();
+        String toLocation = ssh_copy.toString();
+        //Copying ssh file
+		try {
+			new ProcessBuilder("cp", fromLocation, toLocation).start().waitFor();
+			isCopied = true;
+			ssh_copy.setExecutable(true,true);
+			//Deleting original file
+			deleteTempFile(ssh);
 		}
-        catch(Exception e)
-        {
-            //Delete the copied file in case of failure
-            if(isCopied)
-            {
-                deleteTempFile(ssh_copy);
-            }
-            //Previous operation failed. Return original file
-            return ssh;
-        }
+		
+        return ssh_copy;
     }
 
     private String launchCommandIn(ArgumentListBuilder args, File workDir) throws GitException, InterruptedException {
