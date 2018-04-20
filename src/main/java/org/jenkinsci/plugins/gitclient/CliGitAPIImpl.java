@@ -1992,8 +1992,11 @@ public class CliGitAPIImpl extends LegacyCompatibleGitAPIImpl {
             deleteTempFile(ssh);
             return ssh_copy;
         }
-        //Most likely InterruptedException but do the same for all types
-        catch(Exception ie)
+        catch(InterruptedException ie)
+		{
+			throw ie;
+		}
+        catch(Exception e)
         {
             //Delete the copied file in case of failure
             if(isCopied)
