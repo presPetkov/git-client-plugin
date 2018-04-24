@@ -1983,7 +1983,7 @@ public class CliGitAPIImpl extends LegacyCompatibleGitAPIImpl {
         String fromLocation = ssh.toString();
         String toLocation = ssh_copy.toString();
         //Copying ssh file
-	try {
+	 try {
 		new ProcessBuilder("cp", fromLocation, toLocation).start().waitFor();
 		isCopied = true;
 		ssh_copy.setExecutable(true,true);
